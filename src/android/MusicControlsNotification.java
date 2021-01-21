@@ -24,6 +24,7 @@ import android.os.Build;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.content.res.AssetManager;
 
 import android.app.NotificationChannel;
 
@@ -118,15 +119,26 @@ public class MusicControlsNotification {
 			return myBitmap;
 		} catch (Exception ex) {
 			try {
-				InputStream fileStream = cordovaActivity.getAssets().open("www/" + localURL);
+				AssetManager assetManager = cordovaActivity.getAssets();
+				System.out.println(Arrays.toString(list));
+				InputStream fileStream = assetManager.open(localURL);
 				BufferedInputStream buf = new BufferedInputStream(fileStream);
 				Bitmap myBitmap = BitmapFactory.decodeStream(buf);
 				buf.close();
 				return myBitmap;
 			} catch (Exception ex2) {
-				ex.printStackTrace();
-				ex2.printStackTrace();
-				return null;
+				try {
+					InputStream fileStream = cordovaActivity.getAssets().open("www/" + localURL);
+					BufferedInputStream buf = new BufferedInputStream(fileStream);
+					Bitmap myBitmap = BitmapFactory.decodeStream(buf);
+					buf.close();
+					return myBitmap;
+				} catch (Exception ex3) {
+					ex.printStackTrace();
+					ex2.printStackTrace();
+					ex3.printStackTrace();
+					return null;
+				}
 			}
 		}
 	}

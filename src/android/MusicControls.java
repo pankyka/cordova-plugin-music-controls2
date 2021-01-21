@@ -31,6 +31,7 @@ import android.os.Build;
 import android.R;
 import android.content.BroadcastReceiver;
 import android.media.AudioManager;
+import android.content.res.AssetManager;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -265,16 +266,27 @@ public class MusicControls extends CordovaPlugin {
 			return myBitmap;
 		} catch (Exception ex) {
 			try {
-				InputStream fileStream = cordovaActivity.getAssets().open("www/" + localURL);
+				AssetManager assetManager = this.cordova.getActivity().getAssets();
+				System.out.println(Arrays.toString(list));
+				InputStream fileStream = assetManager.open(localURL);
 				BufferedInputStream buf = new BufferedInputStream(fileStream);
 				Bitmap myBitmap = BitmapFactory.decodeStream(buf);
 				buf.close();
 				return myBitmap;
 			} catch (Exception ex2) {
-				ex.printStackTrace();
-				ex2.printStackTrace();
-				return null;
-			}
+				try {
+					InputStream fileStream = cordovaActivity.getAssets().open("www/" + localURL);
+					BufferedInputStream buf = new BufferedInputStream(fileStream);
+					Bitmap myBitmap = BitmapFactory.decodeStream(buf);
+					buf.close();
+					return myBitmap;
+				} catch (Exception ex3) {
+					ex.printStackTrace();
+					ex2.printStackTrace();
+					ex3.printStackTrace();
+					return null;
+				}
+			}			
 		}
 	}
 
