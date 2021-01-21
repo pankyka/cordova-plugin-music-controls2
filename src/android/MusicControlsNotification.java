@@ -120,7 +120,6 @@ public class MusicControlsNotification {
 		} catch (Exception ex) {
 			try {
 				AssetManager assetManager = cordovaActivity.getAssets();
-				System.out.println(Arrays.toString(list));
 				InputStream fileStream = assetManager.open(localURL);
 				BufferedInputStream buf = new BufferedInputStream(fileStream);
 				Bitmap myBitmap = BitmapFactory.decodeStream(buf);
